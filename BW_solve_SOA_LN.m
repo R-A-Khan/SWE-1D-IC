@@ -1,0 +1,42 @@
+function [b, T, Y] = BW_solve_SOA_LN(h, dt, u0, tmin, tmax, x0_inds, trend, eta_hat_x0)
+% Usage: 
+% [b, T, Y] = BW_solve(h, dt, u0, tmin, tmax, x0_inds, trend, obs, eta, u_all, eta_all, T_obs, T_eta, nl)
+%
+% Solves backwards (adjoint) equations using observations results from
+% forward solver
+%
+% Input:
+% h       = grid spacing
+% dt      = time step
+% u0      = initial conditions for height and velocity
+% tmin    = minimum time
+% tmax    = maximum time (control time)
+% x0_inds = indices of observation positions
+% trend   = function handle for trend (rhs of ode in time)
+% obs     = vector of height at observation position from t=tmin to t=tmax
+% eta     = height at control time for all positions
+% u_all   = velocity at all positions and times
+% eta_all = height at all positions and times
+% T_obs   = times for all observations
+% T_eta   = times for all height data from forward solver
+% nl      = true = nonlinear equations, false = linear equations
+%
+% Output:
+% b = height at time tmin for all positions
+% T = numSteps x 1 vector of discrete time steps between tmin and tmax
+% Y = 2N x numSteps matrix
+%     1:N rows = height, N+1 : 2N rows = velocity
+%     Rows   = values of height/velocity at point x_i for all times
+%     Colums = values of height/velocity at time t_i for all positions
+
+% Solving backwards starting t=tmax to t=tmin
+% Flip eta and obs e.g. obs_1 corresponds to t=tmax
+
+eta_hat_x0 = fliplr(eta_hat_x0);
+
+
+tRange = [tmin tmax];
+[T,Y] = RK34_BW_SOA_LN(dt, u0, tRange, trend, h, x0_inds, eta_hat_x0);
+
+N = length(u0)/2;
+b = Y(1:N,length(T));
