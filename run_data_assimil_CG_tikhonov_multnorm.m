@@ -1,4 +1,4 @@
-% Run data assimilation for various cases and plot results
+% Run data assimilation for various cases with Tikhonoc regularisation and plot results
 clear all
 % Parameters for the data assimilation calculations
 n_obs       = [5];        % Number of observation  points
@@ -13,7 +13,7 @@ iter_max    = 500;        % Max number of iterations
 line_min    = true;       % Find optimal step
 smooth_grad = false;      % Smooth L2 gradient to Sobolev gradient
 filt        = 0.1;        % filtering parameter for Sobolev gradient   
-conj_grad_type = 2;       % 1 = Fletcher Reeves, 2 = Polak-Ribière
+conj_grad_type = 2;       % 1 = Fletcher Reeves, 2 = Polak-RibiÃ¨re
 iter_chunk = 5;           % No. of iterations after which descent algorithm resets to steepest descent 
 noisy_obs  = false;       % True = noisy observations and includes tikhonov regularisation
 tikh_par   = 0.01;        % Tikhonov Regularisation Parameter
