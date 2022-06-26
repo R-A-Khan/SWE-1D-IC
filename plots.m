@@ -1,4 +1,4 @@
-%load('~/doc/papers/data_assimilation/data/Assimilation_data_transition_cost');
+
 load('IC_Assimilation_with_bathy_amp_0_05.mat');
 clf;
 iter = 0:iter_max;
